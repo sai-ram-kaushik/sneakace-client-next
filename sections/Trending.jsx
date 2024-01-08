@@ -6,8 +6,19 @@ import { BsBoxArrowInRight } from "react-icons/bs";
 import Image from "next/image";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import TabButton from "../components/TabButton";
+import ProductDetail from "../sections/ProductDetail"
 import Link from "next/link";
+
+
+// 'use client'; // For Next JS 13 app router
+
+import dynamic from 'next/dynamic';
+
+const ScrollCarousel = dynamic(() => import('../components/ScrollCarasoul'), { ssr: false });
+
+
 const Trending = () => {
+  const [ProductVisible, setProductVisible] = useState(false);
   const slideLeft = () => {
     var slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft - 400;
@@ -60,8 +71,9 @@ const Trending = () => {
                       />
                     </div>
 
-                    <div className="p-2 rounded-full bg-secondary text-background cursor-pointer">
+                    <div className="p-2 rounded-full bg-secondary text-background cursor-pointer" onClick={() => { setProductVisible(!ProductVisible) }}>
                       <AiOutlineEye size={30} className="text-background" />
+                      {ProductVisible && <ProductDetail ProductVisible={ProductVisible} setProductVisible={setProductVisible} />}
                     </div>
                   </div>
                 </div>
@@ -111,8 +123,10 @@ const Trending = () => {
                       />
                     </div>
 
-                    <div className="p-2 rounded-full bg-secondary text-background cursor-pointer">
+                    <div className="p-2 rounded-full bg-secondary text-background cursor-pointer" onClick={() => { setProductVisible(!ProductVisible) }}>
                       <AiOutlineEye size={30} className="text-background" />
+                      {ProductVisible && <ProductDetail ProductVisible={ProductVisible} setProductVisible={setProductVisible} />}
+
                     </div>
                   </div>
                 </div>
@@ -178,29 +192,17 @@ const Trending = () => {
           Sale Items
         </TabButton>
       </div>
-      <div className="relative flex items-center justify-center bg-[#FEF9EC] p-3 rounded-xl mt-5">
-        <MdChevronLeft
-          className="opacity-50 cursor-pointer hover:opacity-100 text-background"
-          onClick={slideLeft}
-          size={40}
-        />
-        <div
-          id="slider"
-          className="w-full h-full overflow-x-scroll overflow-hidden scroll whitespace-nowrap scroll-smooth scrollbar-hide">
-          <div className="flex">
-            {TAB_DATA.find((t) => t.id === tab).content}
-          </div>
-        </div>
-        <MdChevronRight
-          className="opacity-50 cursor-pointer hover:opacity-100 text-background"
-          onClick={slideRight}
-          size={40}
-        />
+
+
+      {/* Scroll you have to delete the below div to delete it */}
+      <div className="demo bg-[#FEF9EC] px-3 py-2 md:p-4 rounded-xl mt-5">
+        <ScrollCarousel />
       </div>
 
+
       <div className="flex items-center justify-center mt-3">
-        <Link href="/products">
-          <p className="font-normal">View All Products</p>
+        <Link href="/products" className=" text-white underline hover:underline transition-all duration-300 ease-in-out hover:text-[#FFCF00]">
+          <p className="font-normal text-lg font-Poppins_bold">View All Products</p>
         </Link>
       </div>
     </div>
@@ -208,4 +210,3 @@ const Trending = () => {
 };
 
 export default Trending;
-
